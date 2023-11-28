@@ -1,0 +1,306 @@
+rules:
+#############################################
+#           REGLAS PARA VE_REF              #
+#############################################
+## VE_REF no contine NA
+- expr: '!is.na(VE_REF)'
+  name: 'VE_REF_presence'
+  label: 'presencia de VE_REF'
+  description: |
+    VE_REF no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## VE_REF es de tipo caracter
+- expr: is.character(VE_REF)
+  name: 'VE_REF_type'
+  label: 'Tipo de variable VE_REF'
+  description: |
+    VE_REF es de tipo char
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## VE_REF es de longitud 12
+- expr: field_length(VE_REF, n = 12)
+  name: 'VE_REF_size'
+  label: 'Longitud de VE_REF'
+  description: |
+    La longitud del código VE_REF es siempre 12
+  created: 2023-09-20
+  meta:
+    language: validate 1.1.3
+    severity: error
+## VE_REF es siempre de la forma ESP000XXXXX o ESP00000XXXX
+- expr: grepl("^ESP0000\\d{4,5}$", VE_REF) == TRUE
+  name: 'VE_REF_pattern'
+  label: 'Contenido de VE_REF'
+  description: |
+    VE_REF es siempre de la forma ESP000XXXXX o ESP00000XXXX
+  created: 2023-09-20
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#           REGLAS PARA FT_REF              #
+#############################################
+## FT_REF puede contener NA
+- expr: '!is.na(FT_REF)'
+  name: 'FT_REF_presence'
+  label: 'presencia de FT_REF'
+  description: |
+    FT_REF puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: warning
+## Si no contiene NA será del tipo SAN_XXXX o MUR_XXXX
+- expr: is.na(FT_REF) | grepl("^SAN_\\d{4}|^MAL_\\d{4}|^MUR_\\d{4}|^BAL_\\d{4}|^CAN_\\d{4}", FT_REF)
+    == TRUE
+  name: 'FT_REF_pattern'
+  label: 'Contenido de FT_REF'
+  description: |
+    VE_REF no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## FT_REF tiene que ser de tipo factor    
+- expr: is.factor(FT_REF)
+  name: 'FT_REF_type'
+  label: 'Tipo de variable FT_REF'
+  description: |
+    FT_REF es de tipo factor
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#        REGLAS PARA SI_TIMESTAMP           #
+#############################################
+## SI_TIMESTAMP no puede contener NA
+- expr: '!is.na(SI_TIMESTAMP)'
+  name: 'SI_TIMESTAMP_presence'
+  label: 'presencia de SI_TIMESTAMP'
+  description: |
+    SI_TIMESTAMP no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_TIMESTAMP tiene que ser de tipo dttm    
+- expr: class(SI_TIMESTAMP) %in% c("POSIXct", "POSIXt")
+  name: 'SI_TIMESTAMP_type'
+  label: 'Tipo de variable SI_TIMESTAMP'
+  description: |
+    SI_TIMESTAMP es de tipo dttm
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_TIMESTAMP no puede estar en el futuro
+- expr: all(SI_TIMESTAMP <= Sys.time())
+  name: 'SI_TIMESTAMP_rangemax'
+  label: 'Rango máximo de la fecha'
+  description: |
+    SI_TIMESTAMP no puede estar en el futuro
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#           REGLAS PARA SI_LATI             #
+#############################################
+## SI_LATI no puede contener NA
+- expr: '!is.na(SI_LATI)'
+  name: 'SI_LATI_presence'
+  label: 'presencia de SI_LATI'
+  description: |
+    SI_LATI no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_LATI tiene que ser de tipo numeric    
+- expr: class(SI_LATI) == "numeric"
+  name: 'SI_LATI_type'
+  label: 'Tipo de variable SI_LATI'
+  description: |
+    SI_LATI es de tipo numeric, doble precisión
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_LATI tiene que estar entre -180 y 180    
+- expr: in_range(SI_LATI, min = -180, max = 180)
+  name: 'SI_LATI_range'
+  label: 'Rango de la variable SI_LATI'
+  description: |
+    SI_LATI es una latitud por lo tanto sus valores estarán comprendidos entre -180 y 180
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#           REGLAS PARA SI_LONG             #
+#############################################
+## SI_LONG no puede contener NA
+- expr: '!is.na(SI_LONG)'
+  name: 'SI_LONG_presence'
+  label: 'presencia de SI_LONG'
+  description: |
+    SI_LONG no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_LONG tiene que ser de tipo numeric    
+- expr: class(SI_LONG) == "numeric"
+  name: 'SI_LONG_type'
+  label: 'Tipo de variable SI_LONG'
+  description: |
+    SI_LONG es de tipo numeric, doble precisión
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_LONG tiene que estar entre -180 y 180    
+- expr: in_range(SI_LONG, min = -180, max = 180)
+  name: 'SI_LONG_range'
+  label: 'Rango de la variable SI_LONG'
+  description: |
+    SI_LONG es una longitud por lo tanto sus valores estarán comprendidos entre -180 y 180
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#             REGLAS PARA SI_SP             #
+#############################################
+## SI_SP no puede contener NA
+- expr: '!is.na(SI_SP)'
+  name: 'SI_SP_presence'
+  label: 'presencia de SI_SP'
+  description: |
+    SI_SP no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_SP tiene que ser de tipo numeric    
+- expr: class(SI_SP) == "numeric"
+  name: 'SI_SP_type'
+  label: 'Tipo de variable SI_SP'
+  description: |
+    SI_SP es de tipo numeric, doble precisión
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_SP no puede ser negativa
+- expr: SI_SP >= 0
+  name: 'SI_SP_min'
+  label: 'Valor mínimo de SI_SP'
+  description: |
+    SI_SP no puede tener valores negativos, es una velocidad
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_SP valor máximo (decidir valor)
+- expr: SI_SP <= 20
+  name: 'SI_SP_max'
+  label: 'Valor máximo de SI_SP'
+  description: |
+    SI_SP no puede tener valores mayores que 20
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#            REGLAS PARA SI_SPCA            #
+#############################################
+## SI_SPCA no puede contener NA
+- expr: '!is.na(SI_SPCA)'
+  name: 'SI_SPCA_presence'
+  label: 'presencia de SI_SPCA'
+  description: |
+    SI_SPCA no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_SPCA tiene que ser de tipo numeric    
+- expr: class(SI_SPCA) == "numeric"
+  name: 'SI_SPCA_type'
+  label: 'Tipo de variable SI_SPCA'
+  description: |
+    SI_SPCA es de tipo numeric, doble precisión
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_SPCA no puede ser negativa
+- expr: SI_SPCA >= 0
+  name: 'SI_SPCA_min'
+  label: 'Valor mínimo de SI_SPCA'
+  description: |
+    SI_SPCA no puede tener valores negativos, es una velocidad
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_SPCA valor máximo (decidir valor)
+- expr: SI_SPCA <= 20
+  name: 'SI_SPCA_max'
+  label: 'Valor máximo de SI_SPCA'
+  description: |
+    SI_SPCA no puede tener valores mayores que 20
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#             REGLAS PARA SI_HE             #
+#############################################
+## SI_HE no puede contener NA
+- expr: '!is.na(SI_HE)'
+  name: 'SI_HE_presence'
+  label: 'presencia de SI_HE'
+  description: |
+    SI_HE no puede ser NA
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_HE tiene que ser de tipo numeric    
+- expr: class(SI_HE) == "numeric"
+  name: 'SI_HE_type'
+  label: 'Tipo de variable SI_HE'
+  description: |
+    SI_HE es de tipo numeric, doble precisión
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_HE no puede ser negativa
+- expr: SI_HE >= 0
+  name: 'SI_HE_min'
+  label: 'Valor mínimo de SI_HE'
+  description: |
+    SI_HE no puede tener valores negativos lo calculamos en [0,360]
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_HE valor máximo (decidir valor)
+- expr: SI_HE <= 360
+  name: 'SI_HE_max'
+  label: 'Valor máximo de SI_HE'
+  description: |
+    SI_HE no puede tener valores mayores que 360
+  created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
