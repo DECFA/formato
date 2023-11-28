@@ -136,8 +136,8 @@ vessel_track_df$LE_MET4 <- NA
 vessel_track_df$LE_MET4 <- as.factor(vessel_track_df$LE_GEAR)
 
 # Metier
-vessel_track_df$LE_MET <- NA
-vessel_track_df$LE_MET <- as.factor(vessel_track_df$LE_MET)
+vessel_track_df$LE_MET6 <- NA
+vessel_track_df$LE_MET6 <- as.factor(vessel_track_df$LE_MET)
 
 # Estado
 #
