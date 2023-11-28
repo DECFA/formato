@@ -267,6 +267,7 @@ col_order <- c("VE_REF", "FT_REF", "SI_TIMESTAMP", "SI_LATI", "SI_LONG", "SI_SP"
 
 vessel_track_sf_final <- vessel_track_sf_in_out[, col_order]
 
-write.table(vessel_track_sf_final, file = "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted_final.csv", sep = ";", dec = ".", row.names = FALSE, col.names = TRUE, quote = FALSE)
+write.table(vessel_track_sf_final, file = "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted_final.csv", 
+            sep = ";", dec = ".", row.names = FALSE, col.names = TRUE, quote = FALSE, na ="")
 saveRDS(vessel_track_sf_final, file = "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted_final.rds")
 
