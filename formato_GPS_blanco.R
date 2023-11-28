@@ -9,8 +9,10 @@ library(lubridate)
 library(geosphere)
 library(sf)
 
+setwd("/home/danielc/TEPESCO/git/formato/")
+
 ## Cargamos el fichero de cajas verdes
-data <- read_csv("/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco.csv")
+data <- read_csv("datos_de_muestra/GPS/gps_blanco.csv")
 
 # Leer el archivo CSV. Hay que comprobar que separadores de campos y de decimales tiene. 
 # Usaremos por convención el ; como separador de campos y el . como separador de decimales
@@ -18,10 +20,10 @@ data <- read_csv("/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco.
 # incorrecto, ya que usa , en lugar de .
 
 # Ruta al archivo CSV ya fromateado correctamente
-csv_formateado <- "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted.csv"
+csv_formateado <- "datos_de_muestra/GPS/gps_blanco_formatted.csv"
 
 # Ruta al archivo RDS ya formateado correctamente
-rds_formateado <- "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted.rds"
+rds_formateado <- "datos_de_muestra/GPS/gps_blanco_formatted.rds"
 
 write.table(data, file = csv_formateado, sep = ";", dec = ".", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
@@ -212,7 +214,7 @@ vessel_track_sf <- st_as_sf(vessel_track_df, coords =  c("SI_LONG2", "SI_LATI2")
 
 ## Cargamos el fichero de Puertos, este es uno de este año, el que empezamos a
 ## crear nosotros
-puertos_df <- read_csv("/home/danielc/TEPESCO/formato/datos_de_muestra/Puertos.csv")
+puertos_df <- read_csv("Puertos.csv")
 
 
 ## Creamos un objeto espacial con los datos del puerto, que será
@@ -267,7 +269,7 @@ col_order <- c("VE_REF", "FT_REF", "SI_TIMESTAMP", "SI_LATI", "SI_LONG", "SI_SP"
 
 vessel_track_sf_final <- vessel_track_sf_in_out[, col_order]
 
-write.table(vessel_track_sf_final, file = "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted_final.csv", 
+write.table(vessel_track_sf_final, file = "datos_de_muestra/GPS/gps_blanco_formatted_final.csv", 
             sep = ";", dec = ".", row.names = FALSE, col.names = TRUE, quote = FALSE, na ="")
-saveRDS(vessel_track_sf_final, file = "/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco_formatted_final.rds")
+saveRDS(vessel_track_sf_final, file = "datos_de_muestra/GPS/gps_blanco_formatted_final.rds")
 
