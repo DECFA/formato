@@ -8,7 +8,6 @@ library(tidyverse)
 library(lubridate)
 library(geosphere)
 library(sf)
-library(sp)
 
 ## Cargamos el fichero de cajas verdes
 data <- read_csv("/home/danielc/TEPESCO/formato/datos_de_muestra/GPS/gps_blanco.csv")
@@ -67,13 +66,20 @@ vessel_track_df <- vessel_track_df %>%
   select(-`floor_date(SI_TIMESTAMP, unit = "day")`)
 
 # Convertimos las columnas de latitud y longitud a objetos "SpatialPoints"
+## Código usando sp
+#coords <- vessel_track_df %>%
+#  select(SI_LONG, SI_LATI)
+#points <- SpatialPoints(coords)
 
+## Nuevo código para sf
 coords <- vessel_track_df %>%
-  select(SI_LONG, SI_LATI)
-points <- SpatialPoints(coords)
+  select(SI_LONG, SI_LATI) %>%
+  st_as_sf(coords = c("SI_LONG", "SI_LATI"), crs = 4326)
 
+points <- st_as_sf(coords, coords = c("SI_LONG", "SI_LATI"), agr = "constant")
 
-
+# Extract coordinates as a matrix
+coords_matrix <- st_coordinates(points)
 
 # Calculamos el rumbo medio entre puntos consecutivos. Se puede hacer de dos formas
 # 1.
@@ -84,7 +90,9 @@ points <- SpatialPoints(coords)
 # Hay que tener en cuenta que el rumbo del viaje cambia continuamente a medida que avanza por el camino. 
 # Una ruta con rumbo constante es una línea de rumbo.
 
-bearings <- bearing(points[-length(points)], points[-1])
+#(sp) bearings <- bearing(points[-length(points)], points[-1])
+
+bearings <- bearing(coords_matrix[-nrow(coords_matrix), ], coords_matrix[-1, ])
 
 # 2.
 # USANDO bearingsRhumb
@@ -94,8 +102,9 @@ bearings <- bearing(points[-length(points)], points[-1])
 # es decir, trayectorias de rumbo verdadero constante. Los meridianos y el ecuador son a la vez líneas de rumbo y 
 # círculos máximos. Las líneas de rumbo que se acercan a un polo se convierten en una espiral muy cerrada.
 
-bearingsRhumb <- bearingRhumb(points[-length(points)], points[-1])
+#(sp) bearingsRhumb <- bearingRhumb(points[-length(points)], points[-1])
 
+bearingsRhumb <- bearingRhumb(coords_matrix[-nrow(coords_matrix), ], coords_matrix[-1, ])
 # Añadimos la columna de bearings al dataframe original
 vessel_track_df$SI_COG <- c(NA, if_else(bearings < 0, bearings + 360, bearings))
 #vessel_track_df$SI_COG2 <- c(NA, bearingsRhumb)
@@ -133,11 +142,11 @@ vessel_track_df$FT_REF <- as.factor(vessel_track_df$FT_REF)
 
 # Arte
 vessel_track_df$LE_MET4 <- NA
-vessel_track_df$LE_MET4 <- as.factor(vessel_track_df$LE_GEAR)
+vessel_track_df$LE_MET4 <- as.factor(vessel_track_df$LE_MET4)
 
 # Metier
 vessel_track_df$LE_MET6 <- NA
-vessel_track_df$LE_MET6 <- as.factor(vessel_track_df$LE_MET)
+vessel_track_df$LE_MET6 <- as.factor(vessel_track_df$LE_MET6)
 
 # Estado
 #
@@ -178,7 +187,7 @@ vessel_track_df$SI_FOPER <- as.factor(vessel_track_df$SI_FOPER)
 
 vessel_track_df <- vessel_track_df %>%
   select(VE_REF, FT_REF, SI_TIMESTAMP, SI_LATI, SI_LONG, SI_SP, SI_SPCA, SI_HE, 
-         SI_COG, SI_DISTANCE, SI_DISTANCECA, SI_TDIFF, LE_GEAR, LE_MET, 
+         SI_COG, SI_DISTANCE, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6, 
          SI_FSTATUS, SI_FOPER, SU_ISOB, SI_OGT)
 
 
@@ -254,7 +263,7 @@ vessel_track_sf_in_out <- vessel_track_sf_in_out %>%
 # Reordenamos el dataframe y lo guardamos, finalizando aquí
 
 col_order <- c("VE_REF", "FT_REF", "SI_TIMESTAMP", "SI_LATI", "SI_LONG", "SI_SP", "SI_SPCA", "SI_HE", "SI_COG", "SI_DISTANCECA", 
-               "SI_TDIFF", "LE_GEAR", "LE_MET", "SI_HARB", "SI_FSTATUS", "geometry", "SI_FOPER", "SU_ISOB", "SI_OGT", "SI_DISTANCE")
+               "SI_TDIFF", "LE_MET4", "LE_MET6", "SI_HARB", "SI_FSTATUS", "geometry", "SI_FOPER", "SU_ISOB", "SI_OGT", "SI_DISTANCE")
 
 vessel_track_sf_final <- vessel_track_sf_in_out[, col_order]
 
