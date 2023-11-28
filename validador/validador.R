@@ -2,7 +2,9 @@
 ## Usamos el paquete validate
 
 library("validate")
-val_df <- readRDS("/home/danielc/TEPESCO/datos_de_muestra/GB/gb_testsample_processed_validation.rds")
+setwd("/home/danielc/TEPESCO/git/formato/")
+
+val_df <- readRDS("datos_de_muestra/GB/gb_testsample_processed_validation.rds")
 
 ## Creamos un fichero con reglas para la validación: p.ej gb_rules.yaml
 
@@ -11,7 +13,7 @@ onecol <- val_df %>% select(VE_REF,FT_REF, SI_TIMESTAMP, SI_LATI, SI_LONG, SI_SP
 # Definir los nombres de columna requeridos
 required_columns <- c(
   "VE_REF", "FT_REF", "SI_TIMESTAMP", "SI_LATI", "SI_LONG",
-  "SI_SP", "SI_SPCA", "SI_HE", "SI_HECA", "SI_DISTANCE", "SI_TDIFF",
+  "SI_SP", "SI_SPCA", "SI_HE", "SI_DISTANCE", "SI_TDIFF",
   "LE_MET4", "LE_MET6", "SI_FSTATUS"
 )
 
@@ -24,7 +26,7 @@ if (length(colnames(val_df)[!(colnames(val_df) %in% required_columns)]) > 0){
 } else if (all(required_columns %in% colnames(val_df)))  {
   print("Todas las columnas requeridas están presentes.")
   # Continuar con el resto del script aquí
-  rules <- validator(.file ="/home/danielc/TEPESCO/datos_de_muestra/gb_rules.yaml")
+  rules <- validator(.file ="validador/gb_rules.yaml")
   summary(confront(val_df,rules, raise ='all'))
   warnings(confront(val_df,rules, raise ='all'))
   errors(confront(val_df,rules, raise ='all'))
@@ -52,7 +54,7 @@ sort((confront(val_df,rules, raise ='all')))
 
 
 
-rules <- validator(.file ="/home/danielc/TEPESCO/datos_de_muestra/gb_rules.yaml")
+rules <- validator(.file ="/home/danielc/TEPESCO/formato/datos_de_muestra/gb_rules.yaml")
 summary(confront(onecol,rules, raise ='all'))
 
 

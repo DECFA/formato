@@ -13,11 +13,11 @@ rules:
     language: validate 1.1.3
     severity: error
 ## VE_REF es de tipo caracter
-- expr: is.character(VE_REF)
+- expr: is.factor(VE_REF)
   name: 'VE_REF_type'
   label: 'Tipo de variable VE_REF'
   description: |
-    VE_REF es de tipo char
+    VE_REF es de tipo factor
   created: 2023-09-20 
   meta:
     language: validate 1.1.3
