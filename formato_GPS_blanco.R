@@ -29,7 +29,6 @@ csv_formateado <- "datos_de_muestra/GPS/gps_blanco_formatted.csv"
 # Ruta al archivo RDS ya formateado correctamente
 rds_formateado <- "datos_de_muestra/GPS/gps_blanco_formatted.rds"
 
-<<<<<<< HEAD
 write.table(data,
             file = csv_formateado,
             sep = ";",
@@ -37,10 +36,9 @@ write.table(data,
             row.names = FALSE,
             col.names = TRUE,
             quote = FALSE)
-=======
+
 write.table(data, file = csv_formateado, sep = ";", dec = ".",
             row.names = FALSE, col.names = TRUE, quote = FALSE)
->>>>>>> c4447046677a575b4f341e2659f9ee06513f3251
 
 # Trabajamos con el fichero formateado correctamente para evitar posteriores
 # problemas
@@ -62,8 +60,8 @@ vessel_track_df <- vessel_track_df %>%
   )
 
 # Cambiamos la fecha para que sea del tipo correcto
-# y
-# Cambiamos la velocidad instantánea de km/h a nudos
+# y cambiamos la velocidad instantánea de km/h a nudos.
+
 vessel_track_df <- vessel_track_df %>%
   mutate(SI_TIMESTAMP = ymd_hms(SI_TIMESTAMP, tz = "UTC")) %>%
   mutate(SI_SP = vessel_track_df$SI_SP * 0.539957)
@@ -96,15 +94,13 @@ coords <- vessel_track_df %>%
 
 points <- st_as_sf(coords, coords = c("SI_LONG", "SI_LATI"), agr = "constant")
 
-# Extract coordinates as a matrix
+# Extremos las coordenadas como una matriz
+
 coords_matrix <- st_coordinates(points)
 
 # Calculamos el rumbo medio entre puntos consecutivos. Se puede hacer de dos
 # formas
-<<<<<<< HEAD
 #
-=======
->>>>>>> c4447046677a575b4f341e2659f9ee06513f3251
 # 1.
 # USANDO bearing
 # --------------
@@ -140,8 +136,7 @@ vessel_track_df$SI_COG <- c(NA, if_else(bearings < 0, bearings + 360, bearings))
 vessel_track_df <- na.omit(vessel_track_df)
 
 # Añadimos columna para indicar si hay obervador o no (SU_ISOB) que por
-# defecto es FALSE,
-# Si llevase observador se cambiaría por un TRUE.
+# defecto es FALSE, si llevase observador se cambiaría por un TRUE.
 # En el caso del GPS añadimos también un código para el GPS. Se creará
 # de forma similar al FT_REF, añadiendo un _G_ en medio para diferenciarlos
 #
@@ -186,10 +181,7 @@ vessel_track_df$LE_MET6 <- as.factor(vessel_track_df$LE_MET6)
 #
 # PESCA: 1
 # NO PESCA: 0
-<<<<<<< HEAD
 
-=======
->>>>>>> c4447046677a575b4f341e2659f9ee06513f3251
 vessel_track_df$SI_FSTATUS <- NA
 vessel_track_df$SI_FSTATUS <- as.factor(vessel_track_df$SI_FSTATUS)
 
@@ -233,7 +225,7 @@ vessel_track_df <- vessel_track_df %>%
 
 
 # Podemos guardar ya el fichero en formato csv
-<<<<<<< HEAD
+
 write.table(vessel_track_df,
             file = csv_formateado,
             sep = ";",
@@ -244,12 +236,16 @@ write.table(vessel_track_df,
 
 # O en formato RDS (menos tamaño y 100% R)
 
-=======
-write.table(vessel_track_df, file = csv_formateado, sep = ";", dec = ".",
-            row.names = FALSE, col.names = TRUE, quote = FALSE)
+write.table(vessel_track_df,
+            file = csv_formateado,
+            sep = ";",
+            dec = ".",
+            row.names = FALSE,
+            col.names = TRUE,
+            quote = FALSE)
 
 # O en formato RDS (menos tamaño y 100% R)
->>>>>>> c4447046677a575b4f341e2659f9ee06513f3251
+
 saveRDS(vessel_track_df, file = rds_formateado)
 
 
@@ -277,11 +273,8 @@ puertos_df <- read_csv("Puertos.csv")
 
 
 # Creamos un objeto espacial con los datos del puerto, que será
-<<<<<<< HEAD
 # un círculo con centro el las coordenadas del puerto y radio el RANGO.
-=======
-# un círculo con centro el las coordenadas del puerto y radio el RANGO
->>>>>>> c4447046677a575b4f341e2659f9ee06513f3251
+#
 # De esta forma puertos_sf contiene polígonos circulares en la columna de
 # geometría.
 
@@ -289,13 +282,10 @@ puertos_sf <- st_as_sf(puertos_df, coords = c("LON", "LAT"), crs = 4326)
 puertos_sf <- st_buffer(puertos_sf, dist = puertos_sf$RANGO * 1000)
 
 # Buscamos los puntos de las trayectorias del barco que intersectan con
-<<<<<<< HEAD
 # los púntos del círculo del puerto. En nuestro caso, como queremos los que
 # están fuera necesitamos los de longitud cero (no intersecta).
-=======
-# los púntos del círculo del puerto. En nuestro caso, como queremos los que está
-# fuera necesitamos los de longitud cero (no intersecta)
->>>>>>> c4447046677a575b4f341e2659f9ee06513f3251
+
+
 
 vessel_tracks_outside_ports <- vessel_track_sf[
   lengths(st_intersects(vessel_track_sf, puertos_sf)) == 0,
