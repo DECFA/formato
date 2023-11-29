@@ -277,8 +277,8 @@ vessel_tracks_outside_ports <- vessel_track_sf[
 # Podemos comprobar los que estan dentro del puerto. Si está todo correcto, la
 # suma de las filas de los que están dentro y los que están fuera ha de ser
 # igual a las filas de las trayectorias de los barcos En este caso, nuestro
-# ejemplo tiene 57 filas. Puntos fuera del puerto 54, puntos dentro del puerto
-# 3. Suma 57, correcto.
+# ejemplo tiene 72 filas. Puntos fuera del puerto 71, puntos dentro del puerto
+# 1. Suma 72, correcto.
 
 vessel_tracks_inside_ports <- vessel_track_sf[
   lengths(st_intersects(vessel_track_sf, puertos_sf)) != 0,
