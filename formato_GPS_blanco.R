@@ -11,7 +11,7 @@ library(sf)
 
 setwd("/home/danielc/TEPESCO/git/formato/")
 
-## Cargamos el fichero de cajas verdes
+## Cargamos el fichero de gps blancos
 data <- read_csv("datos_de_muestra/GPS/gps_blanco.csv")
 
 # Leer el archivo CSV. Hay que comprobar que separadores de campos y de

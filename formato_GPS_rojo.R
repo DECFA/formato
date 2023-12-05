@@ -164,12 +164,12 @@ vessel_track_df$VE_REF <- as.factor(vessel_track_df$VE_REF)
 vessel_track_df$FT_REF <- NA
 vessel_track_df$FT_REF <- as.factor(vessel_track_df$FT_REF)
 
-# Arte
+# Metier nivel 4
 
 vessel_track_df$LE_MET4 <- NA
 vessel_track_df$LE_MET4 <- as.factor(vessel_track_df$LE_MET4)
 
-# Metier
+# Metier nivel 6
 
 vessel_track_df$LE_MET6 <- NA
 vessel_track_df$LE_MET6 <- as.factor(vessel_track_df$LE_MET6)
