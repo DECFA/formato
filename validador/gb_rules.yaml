@@ -109,6 +109,16 @@ rules:
   meta:
     language: validate 1.1.3
     severity: error
+## El formato de SI_DATETIME ES YYYY-MM-DD HH:MM:SS
+- expr: grepl('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$', as.character(SI_TIMESTAMP))
+  name: 'SI_TIMESTAMP_validformat'
+  label: 'Formato de SI_DATETIM'
+  description: |
+    SI_TIMESTAMP es de la fomrma YYYY_MM_DD HH:MM:SS
+  created: 2023-12-05 
+  meta:
+    language: validate 1.1.3
+    severity: error
 #############################################
 #           REGLAS PARA SI_LATI             #
 #############################################
@@ -301,6 +311,131 @@ rules:
   description: |
     SI_HE no puede tener valores mayores que 360
   created: 2023-09-20 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#       REGLAS PARA SI_DISTANCECA           #
+#############################################
+## SI_DISTANCE no puede contener NA
+- expr: '!is.na(SI_DISTANCECA)'
+  name: 'SI_DISTANCECA_presence'
+  label: 'presencia de SI_DISTANCECA'
+  description: |
+    SI_DISTANCECA no puede ser NA
+  created: 2023-11-28 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_DISTANCECA tiene que ser de tipo numeric    
+- expr: class(SI_DISTANCECA) == "numeric"
+  name: 'SI_DISTANCECA_type'
+  label: 'Tipo de variable SI_DISTANCECA'
+  description: |
+    SI_DISTANCECA es de tipo numeric, doble precisión
+  created: 2023-11-28 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_DISTANCECA no puede ser negativa
+- expr: SI_DISTANCECA >= 0
+  name: 'SI_DISTANCECA_min'
+  label: 'Valor mínimo de SI_DISTANCECA'
+  description: |
+    SI_DISTANCE no puede tener valores negativos, es una velocidad
+  created: 2023-11-28 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#           REGLAS PARA SI_TDIFF            #
+#############################################
+## SI_TDIFF no puede contener NA
+- expr: '!is.na(SI_TDIFF)'
+  name: 'SI_TDIFF_presence'
+  label: 'presencia de SI_TDIFF'
+  description: |
+    SI_TDIFF no puede ser NA
+  created: 2023-11-28 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_TDIFF tiene que ser de tipo numeric    
+- expr: class(SI_TDIFF) == "difftime"
+  name: 'SI_TDIFF_type'
+  label: 'Tipo de variable SI_TDIFF'
+  description: |
+    SI_TDIFF es de tipo difftime
+  created: 2023-11-28 
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_TDIFF no puede ser negativa
+- expr: SI_TDIFF >= 0
+  name: 'SI_TDIFF_min'
+  label: 'Valor mínimo de SI_TDIFF'
+  description: |
+    SI_TDIFF no puede tener valores negativos, es una diferencia de tiempos
+  created: 2023-11-28 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#           REGLAS PARA LE_MET4             #
+#############################################
+## LE_MET4 tiene que ser de tipo factor    
+- expr: class(LE_MET4) == "factor"
+  name: 'LE_MET4_type'
+  label: 'Tipo de variable LE_MET4'
+  description: |
+    LE_MET4 es de tipo factor
+  created: 2023-12-05
+  meta:
+    language: validate 1.1.3
+    severity: error
+## LE_MET4 está en la lista de metiers o es NA
+- expr: val_df$LE_MET4 %in% met4_abb$Abbreviation | is.na(val_df$LE_MET4)
+  name: 'LE_MET4_allowed'
+  label: 'LE_MET4 allowed values'
+  description: |
+    LE_MET4 solo puede tomar determinados valores o ser NA
+  created: 2023-12-05 
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#           REGLAS PARA LE_MET6             #
+#############################################
+## LE_MET6 tiene que ser de tipo factor    
+- expr: class(LE_MET6) == "factor"
+  name: 'LE_MET6_type'
+  label: 'Tipo de variable LE_MET6'
+  description: |
+    LE_MET6 es de tipo factor
+  created: 2023-12-05
+  meta:
+    language: validate 1.1.3
+    severity: error
+#############################################
+#          REGLAS PARA SI_FSTATUS           #
+#############################################
+## SI_FSTATUS tiene que ser de tipo factor    
+- expr: class(SI_FSTATUS) == "factor"
+  name: 'SI_FSTATUS_type'
+  label: 'Tipo de variable SI_FSTATUS'
+  description: |
+    SI_FSTATUS es de tipo factor
+  created: 2023-12-05
+  meta:
+    language: validate 1.1.3
+    severity: error
+## SI_FSTATUS puede ser TRUE, FALSE o NA
+- expr: val_df$SI_FSTATUS %in% c(TRUE, FALSE) | is.na(val_df$SI_FSTATUS)
+  name: 'SI_FSTATUS_allowed'
+  label: 'SI_FSTATUS allowed values'
+  description: |
+    SI_FSTATUS solo puede tomar determinados valores o ser NA
+  created: 2023-12-05 
   meta:
     language: validate 1.1.3
     severity: error
