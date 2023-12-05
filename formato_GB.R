@@ -151,19 +151,64 @@ vessel_track_df <- na.omit(vessel_track_df)
 #
 # SAN_0001 MUR_0004 BAL_0052 CAN_0456 etc...
 
+# Marea
 vessel_track_df$FT_REF <- NA
 vessel_track_df$FT_REF <- as.factor(vessel_track_df$FT_REF)
+
+# Metier nivel 4
 vessel_track_df$LE_MET4 <- NA
 vessel_track_df$LE_MET4 <- as.factor(vessel_track_df$LE_MET4)
+
+#Metier nivel 6
 vessel_track_df$LE_MET6 <- NA
 vessel_track_df$LE_MET6 <- as.factor(vessel_track_df$LE_MET6)
+
+# Estado
+#
+# PESCA: TRUE
+# NO PESCA: FALSE
+
 vessel_track_df$SI_FSTATUS <- NA
+vessel_track_df$SI_FSTATUS <- as.factor(vessel_track_df$SI_FSTATUS)
+
+# Observador
+#
+# Observador embarcado : TRUE
+# Observador no embarcado: FALSE
+
+vessel_track_df$SU_ISOB <- NA
+vessel_track_df$SU_ISOB <- as.factor(vessel_track_df$SU_ISOB)
+
+# OGT
+#
+# Equipado: TRUE
+# No equipado: FALSE
+vessel_track_df$SI_OGT <- NA
+vessel_track_df$SI_OGT <- as.factor(vessel_track_df$SI_OGT)
+
+# En los GPS podríamos identificar también las operaciones de pesca
+# En las cajas verdes este campo estará vacío, pero por homogeneidad
+# de formato incluimos también esta columna
+#
+# LARGADA: SE
+# VIRADA: HA
+# ESPERA: WT (tiempo entre fin de largada e inicio de virada)
+# NAVEGACION: ST
+#
+# Añadimos la culumna apropiada, que estará inicialmente vacía
+
+
+vessel_track_df <- vessel_track_df %>%
+  mutate(SI_FOPER = NA)
+
+vessel_track_df$SI_FOPER <- as.factor(vessel_track_df$SI_FOPER)
 
 # Nos quedamos con el dataframe como nos interesa
 
 vessel_track_df <- vessel_track_df %>%
   select(VE_REF, FT_REF, SI_TIMESTAMP, SI_LATI, SI_LONG, SI_SP, SI_SPCA, SI_HE,
-         SI_COG, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6, SI_FSTATUS)
+         SI_COG, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6,
+         SI_FSTATUS, SI_FOPER, SU_ISOB, SI_OGT)
 
 # Podemos guardar ya el fichero en formato csv
 write.table(vessel_track_df,
@@ -231,10 +276,10 @@ vessel_tracks_inside_ports <- vessel_track_sf[
   ]
 
 # Y podemos añadir la columna indicando si están dentro o fuera del puerto
-# SI_HARB (0 = en puerto, 1 = en mar)
+# SI_HARB (TRUE = en puerto, FALSE = en mar)
 
-vessel_tracks_outside_ports$SI_HARB <- 1
-vessel_tracks_inside_ports$SI_HARB <- 0
+vessel_tracks_outside_ports$SI_HARB <- FALSE
+vessel_tracks_inside_ports$SI_HARB <- TRUE
 
 vessel_track_sf_in_out <- rbind(vessel_tracks_outside_ports,
                                 vessel_tracks_inside_ports)
@@ -261,3 +306,4 @@ write.table(vessel_track_sf_final,
 
 saveRDS(vessel_track_sf_final,
         file = "datos_de_muestra/GB/gb_testsample_formatted_final.rds")
+
