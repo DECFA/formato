@@ -49,14 +49,13 @@ vessel_track_df <- read_delim(csv_formateado, delim = ";")
 # y las renombraremos
 
 vessel_track_df <- vessel_track_df %>%
-  select(-`Altitude(m)`, -`Visible Satellites`, -`Satellites(CN>22)`, -HDOP) %>%
+  select(-`Altitude(m)`, -`Visible Satellites`, -`Satellites(CN>22)`, -HDOP, -`Distance(m)`) %>%
   rename(
     SI_TIMESTAMP = Time,
     SI_LATI = Latitude,
     SI_LONG = Longitude,
     SI_SP = `Speed(km/h)`,
     SI_HE = Course,
-    SI_DISTANCE = `Distance(m)`
   )
 
 # Cambiamos la fecha para que sea del tipo correcto
@@ -218,7 +217,7 @@ vessel_track_df$SI_FOPER <- as.factor(vessel_track_df$SI_FOPER)
 vessel_track_df <- vessel_track_df %>%
   select(
     VE_REF, FT_REF, SI_TIMESTAMP, SI_LATI, SI_LONG, SI_SP, SI_SPCA, SI_HE,
-    SI_COG, SI_DISTANCE, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6,
+    SI_COG, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6,
     SI_FSTATUS, SI_FOPER, SU_ISOB, SI_OGT
   )
 
@@ -318,8 +317,7 @@ vessel_track_sf_in_out <- vessel_track_sf_in_out %>%
 col_order <- c(
   "VE_REF", "FT_REF", "SI_TIMESTAMP", "SI_LATI", "SI_LONG", "SI_SP", "SI_SPCA",
   "SI_HE", "SI_COG", "SI_DISTANCECA", "SI_TDIFF", "LE_MET4", "LE_MET6",
-  "SI_HARB", "SI_FSTATUS", "geometry", "SI_FOPER", "SU_ISOB", "SI_OGT",
-  "SI_DISTANCE"
+  "SI_HARB", "SI_FSTATUS", "geometry", "SI_FOPER", "SU_ISOB", "SI_OGT"
 )
 
 vessel_track_sf_final <- vessel_track_sf_in_out[, col_order]
