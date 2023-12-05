@@ -144,12 +144,12 @@ vessel_track_df <- na.omit(vessel_track_df)
 # etc...
 
 vessel_track_df <- vessel_track_df %>%
-  mutate(SU_ISOB = 0, FT_REF = NA)
+  mutate(SU_ISOB = FALSE, FT_REF = NA)
 
 ## Añadimos la columna para indicar si está equipado con OGT.
 
 vessel_track_df <- vessel_track_df %>%
-  mutate(SI_OGT = 0)
+  mutate(SI_OGT = FALSE)
 
 # Añadimos las columnas que es necesario completar y estimar. Estas por defecto
 # estarán vacías.
@@ -287,8 +287,8 @@ vessel_tracks_inside_ports <- vessel_track_sf[
 # Y podemos añadir la columna indicando si están dentro o fuera del puerto
 # SI_HARB (0 = en puerto, 1 = en mar)
 
-vessel_tracks_outside_ports$SI_HARB <- 1
-vessel_tracks_inside_ports$SI_HARB <- 0
+vessel_tracks_outside_ports$SI_HARB <- TRUE
+vessel_tracks_inside_ports$SI_HARB <- FALSE
 
 vessel_track_sf_in_out <- rbind(vessel_tracks_outside_ports,
                                 vessel_tracks_inside_ports)
