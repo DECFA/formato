@@ -217,7 +217,7 @@ vessel_track_df$SI_FOPER <- as.factor(vessel_track_df$SI_FOPER)
 vessel_track_df <- vessel_track_df %>%
   select(
     VE_REF, FT_REF, SI_TIMESTAMP, SI_LATI, SI_LONG, SI_SP, SI_SPCA, SI_HE,
-    SI_COG, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6,
+    SI_COG, SI_DISTANCE, SI_DISTANCECA, SI_TDIFF, LE_MET4, LE_MET6,
     SI_FSTATUS, SI_FOPER, SU_ISOB, SI_OGT
   )
 
@@ -329,3 +329,20 @@ write.table(vessel_track_sf_final,
 )
 saveRDS(vessel_track_sf_final,
         file = "datos_de_muestra/GPS/gps_blanco_formatted_final.rds")
+
+# Hay que tratar la geometría para que sea compatible con PostgreSQL/PostGIS.
+# Al exportar a csv hay que asegurarse de que la columna geometry mantiene
+# el formato POINT(lon lat) que no lo hace usando write.table y similares, ya
+# que el paquete sf se encarga de traducirlo para R.
+
+vessel_track_postgis <- vessel_track_sf_final 
+
+vessel_track_postgis$geometry <- st_as_text(vessel_track_postgis$geometry)
+
+vessel_track_postgis  <- as.data.frame(vessel_track_postgis)
+
+write.table(vessel_track_postgis,
+            file = "datos_de_muestra/GPS/gps_blanco_formatted_final_postgis.csv",
+            sep = ";", dec = ".", row.names = FALSE, col.names = TRUE,
+            quote = FALSE, na = ""
+)
