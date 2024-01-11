@@ -316,3 +316,20 @@ write.table(vessel_track_sf_final,
 
 saveRDS(vessel_track_sf_final,
         file = "datos_de_muestra/GPS/gps_rojo_formatted_final.rds")
+
+# Hay que tratar la geometría para que sea compatible con PostgreSQL/PostGIS.
+# Al exportar a csv hay que asegurarse de que la columna geometry mantiene
+# el formato POINT(lon lat) que no lo hace usando write.table y similares, ya
+# que el paquete sf se encarga de traducirlo para R.
+
+vessel_track_postgis <- vessel_track_sf_final 
+
+vessel_track_postgis$geometry <- st_as_text(vessel_track_postgis$geometry)
+
+vessel_track_postgis  <- as.data.frame(vessel_track_postgis)
+
+write.table(vessel_track_postgis,
+            file = "datos_de_muestra/GPS/gps_rojo_formatted_final_postgis.csv",
+            sep = ";", dec = ".", row.names = FALSE, col.names = TRUE,
+            quote = FALSE, na = ""
+)
