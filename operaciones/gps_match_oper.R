@@ -1,4 +1,4 @@
-setwd("/home/danielc/TEPESCO/test_esther/tobbdd/")
+setwd("/home/danielc/TEPESCO/git/formato/operaciones/")
 library(dplyr)
 library(lubridate)
 uno <- readRDS("ESP000004365_06082023_16082023_B_formatted.rds")
