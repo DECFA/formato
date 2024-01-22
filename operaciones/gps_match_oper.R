@@ -6,7 +6,6 @@ dos <- readRDS("ESP000015362_25092023_06102023_B_formatted.rds")
 tres <- readRDS("ESP000015608_11082023_22082023_B_formatted.rds")
 cuatro <- readRDS("ESP000022251_30072023_03082023_B_formatted.rds")
 
-
 gps <- rbind(uno, dos, tres, cuatro)
 gps$SI_DATE <- date(gps$SI_TIMESTAMP)
 diario <- read.table(file = "rutas_gps.csv", sep = ";", dec=".", header = T)
