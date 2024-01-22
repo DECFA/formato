@@ -17,7 +17,7 @@ La siguiente tabla muestra las variables generadas, así como el significado de 
 |SI_COG|Course Over Ground (calculado)|numeric (*dbl*)|NO|
 |SI_DISTANCECA|Distancia entre dos puntos <br> consecutivos (calculada)|numeric (*dbl*)|NO|
 |SI_TDIFF|Tiempo en segundos entre dos<br>puntos consecutivos (calculado)|numeric (*dbl*)|NO|
-|LE_MET4|Metier nivel 4<br>OTB, LLS ...|factor (*fct*)|SI|
+|LE_MET4|Metier nivel 4<br>OTB, LLS ...|factor (*fct*)|NO|
 |LE_MET6|Metier nivel 6<br>LLS_DEF_0_0_0, GNS_DEF_50-59_0_0 ...|factor (*fct*)|SI|
 |SI_HARB|En puerto (FALSE) o en mar (TRUE)| factor (*fct*)|NO|
 |SI_FSTATUS|Pescando (TRUE) o no pescando (FALSE)|factor (*fct*)|SI|
